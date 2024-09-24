@@ -1,12 +1,12 @@
 # online mart - user service
 
-## Create Poetry Project 
+## Create Poetry Project
+
+poetry —-version
 
 create new project
 ```bash
-poetry —-version
 poetry new project_name 
-d project_name
 ```
 
 add drivers
