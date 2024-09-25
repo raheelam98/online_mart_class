@@ -44,8 +44,11 @@ def root_route():
 # Function to add a user into the database
 def add_user_into_db(form_data: UserBase, session: Session):
     user = User(**form_data.dict())  # Use dict() to convert Pydantic model to dict
+    # Add the user to the session
     session.add(user)
+    # Commit the session to save the user to the database
     session.commit()
+    # Refresh the session to retrieve the new user data
     session.refresh(user)
     print("New user added:", user)
     return user
