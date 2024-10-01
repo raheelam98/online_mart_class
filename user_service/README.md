@@ -38,10 +38,7 @@ poetry run uvicorn folder_name.file_name:app --port 8000 --reload
 poetry run uvicorn app.main:app --reload
 ```
 
-generate a random string of bytes in hexadecimal format
-```bash
-openssl rand -hex 32
-``` 
+### Contecting with db
 
 #### DATABASE_URL
 
@@ -65,7 +62,7 @@ engine = create_engine(connection_string, connect_args={}, pool_recycle=300)
 
 **create_engine()** SQLModel Function (create a connection to the database)
 
-**Detail**
+**Detail Description**
 
 **connection_string:** Specifies the database URL (e.g., the type of database and its location).
 
@@ -86,7 +83,7 @@ SQLModel.metadata.create_all(engine)
 
 **.engine:** SQLAlchemy database engine that points to your database.
 
-**Detail**
+**Detail Description**
 
 SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifies working with SQL databases in Python, commonly used with FastAPI for defining database models.
 
@@ -94,8 +91,20 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 
 .create_all(): This method, when called, uses the metadata to generate SQL commands that create the necessary tables in the connected database. Essentially, it will ensure all your defined models have corresponding tables.
 
+### Get Form Data
 
-####  User(**form_data.model_dump())
+####  convert data from form_data directly into a User object
+```bash
+User(**form_data.model_dump())
+``` 
+
+form_data.model_dump():** This method returns a dictionary of the data stored in form_data.
+
+** (double asterisk): Unpacks this dictionary into keyword arguments.
+
+User(...): Passes these unpacked arguments to the User constructor, creating an instance of User.
+
+**Detail Description**
 
 **1- Pydantic Model:** User instance (form_data) holds user details.
 
@@ -107,8 +116,19 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 
 **model_dump()** method in Pydantic :- converts a model instance into a dictionary with the model's attribute names as keys and their corresponding values.
 
+### Update Form Data
 
-**Tutorials**
+```bash
+query = select(User).where(User.user_id == selected_id)
+``` 
+select(User): Specifies that you want to select data from the User table.
+
+.where(User.user_id == selected_id): Adds a condition to filter the results to only include rows where user_id matches selected_id.
+
+Executing Raw SQL :- session.execute() to run raw SQL queries
+
+
+### Tutorials
 
 [First Steps](https://fastapi.tiangolo.com/tutorial/first-steps/)
 
