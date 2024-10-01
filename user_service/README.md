@@ -103,7 +103,7 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 
 **3- Dictionary Unpacking:** **form_data.model_dump() unpacks the dictionary into keyword arguments.
 
-**4- Create User Object:** User(**form_data.model_dump(), user_password=hashed_password) creates a new User object with the provided details and the hashed password.
+**4- Create User Object:** User(**form_data.model_dump()) creates a new User object with the provided details.
 
 **model_dump()** method in Pydantic :- converts a model instance into a dictionary with the model's attribute names as keys and their corresponding values.
 
