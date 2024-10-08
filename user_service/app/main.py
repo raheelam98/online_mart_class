@@ -56,11 +56,8 @@ def root_route():
 
 # Function to add a user into the database
 def add_user_into_db(form_data: UserBase, session: Session):
-<<<<<<< HEAD
-    user = User(**form_data.dict())  # Use dict() to convert Pydantic model to dict
-=======
     user = User(**form_data.model_dump())  # Use dict() to convert Pydantic model to dict
->>>>>>> be1e33e (product_service)
+
     
     # Add the user to the session
     session.add(user)
@@ -130,7 +127,6 @@ def delete_user_from_db(delete_id:int, session: DB_Session):
 def delete_user(id:int, session: DB_Session):
     deleted_user = delete_user_from_db(id, session)
     return f'User {deleted_user} has been successfully deleted'
-<<<<<<< HEAD
 
 
 
@@ -139,8 +135,6 @@ def delete_user(id:int, session: DB_Session):
 
 
 
-=======
->>>>>>> be1e33e (product_service)
 
 
 ### ========================= *****  ========================= ###
