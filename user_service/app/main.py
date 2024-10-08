@@ -36,6 +36,7 @@ async def create_db_and_tables(app: FastAPI):
     SQLModel.metadata.create_all(engine)
     yield
 
+# function, before the yield, will be executed before the application starts
 # create session to get memory space in db
 def get_session():
     with Session(engine) as session:
@@ -44,8 +45,7 @@ def get_session():
 # Dependency injection to get a session
 DB_Session = Annotated[Session, Depends(get_session)]
 
-# lifespan function provide by FastAPI (create db table at start of program)
-# function, before the yield, will be executed before the application starts.
+# lifespan function provide by FastAPI (create db table at start of program)# function, before the yield, will be executed before the application starts.
 # it create table only one-time, if table is already created, won't create again
 # Create FastAPI instance
 app = FastAPI(lifespan= create_db_and_tables)
