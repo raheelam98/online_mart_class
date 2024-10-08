@@ -44,6 +44,9 @@ def get_session():
 # Dependency injection to get a session
 DB_Session = Annotated[Session, Depends(get_session)]
 
+# lifespan function provide by FastAPI (create db table at start of program)
+# function, before the yield, will be executed before the application starts.
+# it create table only one-time, if table is already created, won't create again
 # Create FastAPI instance
 app = FastAPI(lifespan= create_db_and_tables)
 
@@ -53,7 +56,11 @@ def root_route():
 
 # Function to add a user into the database
 def add_user_into_db(form_data: UserBase, session: Session):
+<<<<<<< HEAD
     user = User(**form_data.dict())  # Use dict() to convert Pydantic model to dict
+=======
+    user = User(**form_data.model_dump())  # Use dict() to convert Pydantic model to dict
+>>>>>>> be1e33e (product_service)
     
     # Add the user to the session
     session.add(user)
@@ -123,6 +130,7 @@ def delete_user_from_db(delete_id:int, session: DB_Session):
 def delete_user(id:int, session: DB_Session):
     deleted_user = delete_user_from_db(id, session)
     return f'User {deleted_user} has been successfully deleted'
+<<<<<<< HEAD
 
 
 
@@ -131,8 +139,74 @@ def delete_user(id:int, session: DB_Session):
 
 
 
+=======
+>>>>>>> be1e33e (product_service)
 
 
+### ========================= *****  ========================= ###
+### ========================= *****  ========================= ###
+
+# def delete_todo(id: int, session: Session):
+#     # Retrieve the todo object with the given ID
+#     todo = session.get(Todos1, id)
+#     # If no todo found, return a message
+#     if not todo:
+#         return f"Could not find todo from ID: {id}"
+#     # Delete the todo from the session
+#     session.delete(todo)
+#     # Commit the transaction to the database
+#     session.commit()
+#     # Retrieve all todos from the database
+#     allTodos = session.exec(select(Todos1)).all()
+
+# @app.delete("/deleteTodo")
+# async def deleteTodo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
+#     todos = delete_todo(todo_id, session)
+#     if not type(todos) == str:
+#         return todos
+#     raise HTTPException(status_code=404, detail=todos)
+
+### ========================= *****  ========================= ###
+### ========================= *****  ========================= ###
+
+
+
+
+### ========================= *****  ========================= ###
+### ========================= *****  ========================= ###
+### ========================= *****  ========================= ###
+
+# # lifespan function provide by FastAPI (create db table at start of program)
+# # function, before the yield, will be executed before the application starts.
+# # it create table only one-time, if table is already created, won't create again
+# @asynccontextmanager
+# async def life_span(app: FastAPI):
+#     print("Creating Tables....")
+#     create_db_table()
+#     yield
+
+# app = FastAPI(lifespan= life_span, title="API DB")
+
+### ========================= *****  ========================= ###
+
+# create session to get memory space in db
+
+# create object of session and pass engine in it and return in local-variable session
+# get-session is created on server.  (engine give db connectivity) 
+# def get_session():
+#     with Session(engine) as session:
+#         yield session
+
+### ========================= *****  ========================= ###
+
+# # create engine
+# engine = create_engine(connection_string, connect_args={"sslmode":"require"}, pool_recycle=300, echo=True)
+# #  engine with echo=True, it will show the SQL it executes in the output
+
+### ========================= *****  ========================= ###
+
+
+### ========================= *****  ========================= ###
 
 
 

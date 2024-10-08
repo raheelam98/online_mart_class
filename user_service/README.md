@@ -1,11 +1,17 @@
 # online mart - user service
 
+<<<<<<< HEAD
 poetry —-version
 
 **Create Poetry Project**
+=======
+### Contecting with db
 
-create new project
+#### DATABASE_URL
+>>>>>>> be1e33e (product_service)
+
 ```bash
+<<<<<<< HEAD
 poetry new project_name 
 ```
 
@@ -43,6 +49,8 @@ poetry run uvicorn app.main:app --reload
 #### DATABASE_URL
 
 ```bash
+=======
+>>>>>>> be1e33e (product_service)
 connection_string = str(DATABASE_URL).replace("postgresql", "postgresql+psycopg")
 ``` 
 
@@ -136,4 +144,51 @@ Executing Raw SQL :- session.execute() to run raw SQL queries
 
 
 [Can Pydantic model_dump() return exact type?](https://stackoverflow.com/questions/77476105/can-pydantic-model-dump-return-exact-type)
+<<<<<<< HEAD
+=======
+
+
+**==========================================================**
+
+## Tutorials Details  check
+
+**lifespan**
+-lifespan function provide by FastAPI (create db table at start of program)
+-function, before the yield, will be executed before the application starts.
+-it create table only one-time, if table is already created, won't create again
+Create FastAPI instance
+app = FastAPI(lifespan= create_db_and_tables)
+
+**session**
+-create object of session and pass engine in it and return in local-variable session
+-get-session is created on server.  (engine give db connectivity) 
+def get_session():
+    with Session(engine) as session:
+        yield session
+
+
+**SQLModel** (ORM)
+
+we use other methods
+[SQLModel : Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/#review-the-code)
+
+
+**pytest cache directory**
+
+This directory contains data from the pytest's cache plugin,
+which provides the `--lf` and `--ff` options, as well as the `cache` fixture.
+
+**Do not** commit this to version control.
+
+
+[How to re-run failed tests and maintain state between test runs](https://docs.pytest.org/en/stable/how-to/cache.html)
+
+[OAuth2 with Password (and hashing), Bearer with JWT tokens](https://fastapi.tiangolo.com/tutorial/security/oauth2-jwt/?h=jwt)
+
+
+**JWT means "JSON Web Tokens"** (It is not encrypted), Install python-jose
+
+- jwt token decode  # Decoding the token
+-decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+>>>>>>> be1e33e (product_service)
 
