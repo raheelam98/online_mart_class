@@ -37,7 +37,6 @@ def get_session():
 DB_Session = Annotated[Session, Depends(get_session)]
 
 # lifespan function provide by FastAPI (create db table at start of program)
-
 # it create table only one-time, if table is already created, won't create again
 # Create FastAPI instance
 async def life_span(app: FastAPI):
