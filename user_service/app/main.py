@@ -50,7 +50,7 @@ DB_Session = Annotated[Session, Depends(get_session)]
 # Lifespan function provided by FastAPI (creates DB table at program startup)
 # It creates the table only once; if the table already exists, it won't create it again
 async def life_span(app: FastAPI):
-    print("Creating tables during lifespan startup...")
+    print("Call create tables function during lifespan startup...")
     await create_db_and_tables()  # Properly await table creation
     yield  # Lifespan generator is working correctly
 
