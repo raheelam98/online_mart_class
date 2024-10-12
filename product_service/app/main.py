@@ -126,7 +126,9 @@ def update_product_from_db(selected_id: int, update_form_data: ProductModel, ses
     # Update the product's details with the data from the form
     # database                    = form data
     selected_product.product_name = update_form_data.product_name
-    selected_product.product_desc = update_form_data.product_desc
+    selected_product.product_description = update_form_data.product_description
+    selected_product.product_price = update_form_data.product_price
+    selected_product.is_available = update_form_data.is_available
 
     # Add the updated product to the session
     session.add(selected_product)
