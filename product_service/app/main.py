@@ -50,6 +50,7 @@ async def life_span(app: FastAPI):
 # Create FastAPI instance
 app = FastAPI(lifespan=life_span, title='Product API')
 
+
 @app.get('/')
 def get_root_route():
     return "Product Service"
@@ -60,6 +61,7 @@ def get_root_route():
 def add_product_into_db(form_data: ProductModel, session: Session):
     # Create a new Product object using the details provided in form_data
     product = Product(**form_data.model_dump())
+
     # Add the product to the session
     session.add(product)
     # Commit the session to save the product to the database
@@ -69,6 +71,7 @@ def add_product_into_db(form_data: ProductModel, session: Session):
     # Debugging
     print("New product added:", product)
     return product
+
 
 # POST route to add a new product
 @app.post('/api/add_product')
@@ -86,12 +89,14 @@ def get_product_from_db(session: DB_Session):
     statement = select(Product)
     # Execute the statement and get the list of users
     product_list = session.exec(statement).all()
+
     # If no users found, raise an HTTPException with status code 404
     if not product_list:
         raise HTTPException(status_code=404, detail="Not Found")
     # Otherwise, return the list of users
     else:
         return product_list
+
 
 # API endpoint to get product
 @app.get('/api/get_product')
@@ -126,6 +131,7 @@ def update_product_from_db(selected_id: int, update_form_data: ProductModel, ses
     session.refresh(selected_product)
     return selected_product
 
+
 @app.put('/api/update_product')
 def update_product(id:int, product_detail: ProductModel, session: DB_Session):
     # Call the function to retrieve data from the database
@@ -138,6 +144,7 @@ def update_product(id:int, product_detail: ProductModel, session: DB_Session):
 def delete_product_from_db(delete_id: int, session: DB_Session):
     # Retrieve the product from the database using the given ID
     product = session.get(Product, delete_id)
+
     # If the product is not found, raise an HTTPException with status code 404
     if not product:
         raise HTTPException(status_code=404, detail="Not Found")
@@ -146,6 +153,7 @@ def delete_product_from_db(delete_id: int, session: DB_Session):
     # Commit the session to save the changes to the database
     session.commit()
     return 'Product deleted'
+
 
 # API endpoint to delete a product
 @app.delete('/api/delete_product')
