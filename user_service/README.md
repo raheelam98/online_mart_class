@@ -61,6 +61,8 @@ DATABASE_URL = config("DATABASE_URL", cast=Secret)
 
 **==========================================================**
 
+### Contection String
+
 ```bash
 connection_string = str(DATABASE_URL).replace("postgresql", "postgresql+psycopg")
 ``` 
