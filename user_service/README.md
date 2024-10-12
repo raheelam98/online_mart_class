@@ -1,4 +1,4 @@
-# online mart - user service
+# Online Mart - User Service
 
 poetry —-version
 

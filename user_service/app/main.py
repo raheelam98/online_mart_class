@@ -31,11 +31,10 @@ engine = create_engine(
 )
 
 # Function to create the database and tables
-async def create_db_and_tables(app: FastAPI):
-    print(f'Create Tables ...  {app} ')
-    # create all the database tables
+async def create_db_and_tables():
+    print(f'Creating Tables ...')
+    # Create all the database tables
     SQLModel.metadata.create_all(engine)
-    yield
 
 # function, before the yield, will be executed before the application starts
 # create session to get memory space in db
@@ -48,14 +47,41 @@ DB_Session = Annotated[Session, Depends(get_session)]
 
 ### ========================= *****  ========================= ###
 
-# lifespan function provide by FastAPI (create db table at start of program)# function, before the yield, will be executed before the application starts.
-# it create table only one-time, if table is already created, won't create again
+# Lifespan function provided by FastAPI (creates DB table at program startup)
+# It creates the table only once; if the table already exists, it won't create it again
+async def life_span(app: FastAPI):
+    print("Creating tables during lifespan startup...")
+    await create_db_and_tables()  # Properly await table creation
+    yield  # Lifespan generator is working correctly
+
 # Create FastAPI instance
-app = FastAPI(lifespan= create_db_and_tables)
+app = FastAPI(lifespan=life_span, title='Product API')
 
 @app.get('/')
 def root_route():
     return {"Welcome to": "User Service"}
+### ========================= *****  ========================= ###
+
+# Function to retrieve user data from the database
+def get_user_from_db(session: DB_Session):
+    # Create a SQL statement to select all users
+    statement = select(User)
+    # Execute the statement and get the list of users
+    user_list = session.exec(statement).all()
+    # If no users found, raise an HTTPException with status code 404
+    if not user_list:
+        raise HTTPException(status_code=404, detail="Not Found")
+    # Otherwise, return the list of users
+    else:
+        return user_list
+
+# API endpoint to get users
+@app.get('/api/get_user')
+def get_user(session: DB_Session):
+    # Call the function to retrieve user data from the database
+    users = get_user_from_db(session)
+    # Return the list of users
+    return users
 
 ### ========================= *****  ========================= ###
 
@@ -79,29 +105,6 @@ def add_user(new_user: UserBase, session: DB_Session):
     add_user = add_user_into_db(new_user, session)
     print("Add user route ...", add_user)
     return add_user
-
-### ========================= *****  ========================= ###
-
-# Function to retrieve user data from the database
-def get_user_from_db(session: DB_Session):
-    # Create a SQL statement to select all users
-    statement = select(User)
-    # Execute the statement and get the list of users
-    user_list = session.exec(statement).all()
-    # If no users found, raise an HTTPException with status code 404
-    if not user_list:
-        raise HTTPException(status_code=404, detail="Not Found")
-    # Otherwise, return the list of users
-    else:
-        return user_list
-
-# API endpoint to get users
-@app.get('/api/get_user')
-def get_user(session: DB_Session):
-    # Call the function to retrieve user data from the database
-    users = get_user_from_db(session)
-    # Return the list of users
-    return users
 
 ### ========================= *****  ========================= ###
 
