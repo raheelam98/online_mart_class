@@ -18,6 +18,7 @@ class UserUpdateModel(SQLModel):
     user_address: str
     user_password: str  
 
+### ========================= *****  ========================= ###
 
 # Set up the database connection
 connection_string = str(DATABASE_URL).replace(
@@ -45,6 +46,8 @@ def get_session():
 # Dependency injection to get a session
 DB_Session = Annotated[Session, Depends(get_session)]
 
+### ========================= *****  ========================= ###
+
 # lifespan function provide by FastAPI (create db table at start of program)# function, before the yield, will be executed before the application starts.
 # it create table only one-time, if table is already created, won't create again
 # Create FastAPI instance
@@ -54,11 +57,12 @@ app = FastAPI(lifespan= create_db_and_tables)
 def root_route():
     return {"Welcome to": "User Service"}
 
+### ========================= *****  ========================= ###
+
 # Function to add a user into the database
 def add_user_into_db(form_data: UserBase, session: Session):
-    user = User(**form_data.model_dump())  # Use dict() to convert Pydantic model to dict
-
-    
+    # Create a new User object using the details provided in form_data
+    user = User(**form_data.model_dump())
     # Add the user to the session
     session.add(user)
     # Commit the session to save the user to the database
@@ -71,155 +75,83 @@ def add_user_into_db(form_data: UserBase, session: Session):
 # POST route to add a new user
 @app.post('/api/add_user')
 def add_user(new_user: UserBase, session: DB_Session):
-    add_user = add_user_into_db(new_user, session) ## call function
-    print("add user route ...", add_user)
+    # Call function to add user
+    add_user = add_user_into_db(new_user, session)
+    print("Add user route ...", add_user)
     return add_user
 
-# Function to retrive data from db
+### ========================= *****  ========================= ###
+
+# Function to retrieve user data from the database
 def get_user_from_db(session: DB_Session):
+    # Create a SQL statement to select all users
     statement = select(User)
+    # Execute the statement and get the list of users
     user_list = session.exec(statement).all()
+    # If no users found, raise an HTTPException with status code 404
     if not user_list:
         raise HTTPException(status_code=404, detail="Not Found")
+    # Otherwise, return the list of users
     else:
         return user_list
-    
-# api :- get user
-@app.get('/api/get_user')   
+
+# API endpoint to get users
+@app.get('/api/get_user')
 def get_user(session: DB_Session):
+    # Call the function to retrieve user data from the database
     users = get_user_from_db(session)
+    # Return the list of users
     return users
 
-def update_user_from_db(selected_id: int , update_form_data: UserUpdateModel, session: DB_Session ):
-    
+### ========================= *****  ========================= ###
+
+def update_user_from_db(selected_id: int, update_form_data: UserUpdateModel, session: DB_Session):
+    # Create a SQL statement to select the user with the given ID
     statement = select(User).where(User.user_id == selected_id)
+    # Execute the statement and get the selected user
     selected_user = session.exec(statement).first()
+    # If the user is not found, raise an HTTPException with status code 404
     if not selected_user:
         raise HTTPException(status_code=404, detail="Not Found")
-    
-    # from database         =   form data
+    # Update the user's details with the data from the form
     selected_user.user_name = update_form_data.user_name
     selected_user.user_password = update_form_data.user_password
     selected_user.user_address = update_form_data.user_address
-
+    # Add the updated user to the session
     session.add(selected_user)
+    # Commit the session to save the changes to the database
     session.commit()
+    # Refresh the session to retrieve the updated user data
     session.refresh(selected_user)
     return selected_user
 
 @app.put('/api/update_user')
 def update_user(id:int, user_detail: UserUpdateModel, session: DB_Session):
+    # Call the function to retrieve data from the database
     user = update_user_from_db(id, user_detail, session)
     return user
 
-# function to delete
-def delete_user_from_db(delete_id:int, session: DB_Session):
+### ========================= *****  ========================= ###
+
+# Function to delete a user from the database
+def delete_user_from_db(delete_id: int, session: DB_Session):
+    # Retrieve the user from the database using the given ID
     user = session.get(User, delete_id)
+    # If the user is not found, raise an HTTPException with status code 404
     if not user:
         raise HTTPException(status_code=404, detail="Not Found")
-    
+    # Delete the user from the session
     session.delete(user)
+    # Commit the session to save the changes to the database
     session.commit()
-    return f'User deleted'
+    return 'User deleted'
 
-# api
+# API endpoint to delete a user
 @app.delete('/api/delete_user')
-def delete_user(id:int, session: DB_Session):
+def delete_user(id: int, session: DB_Session):
+    # Call function to delete the user from the database
     deleted_user = delete_user_from_db(id, session)
-    return f'User {deleted_user} has been successfully deleted'
-
-
-
-
-
-
-
-
-
+    return f'User id {id} has been successfully deleted'
 
 ### ========================= *****  ========================= ###
-### ========================= *****  ========================= ###
-
-# def delete_todo(id: int, session: Session):
-#     # Retrieve the todo object with the given ID
-#     todo = session.get(Todos1, id)
-#     # If no todo found, return a message
-#     if not todo:
-#         return f"Could not find todo from ID: {id}"
-#     # Delete the todo from the session
-#     session.delete(todo)
-#     # Commit the transaction to the database
-#     session.commit()
-#     # Retrieve all todos from the database
-#     allTodos = session.exec(select(Todos1)).all()
-
-# @app.delete("/deleteTodo")
-# async def deleteTodo(todo_id: int, session: Annotated[Session, Depends(get_session)]):
-#     todos = delete_todo(todo_id, session)
-#     if not type(todos) == str:
-#         return todos
-#     raise HTTPException(status_code=404, detail=todos)
-
-### ========================= *****  ========================= ###
-### ========================= *****  ========================= ###
-
-
-
-
-### ========================= *****  ========================= ###
-### ========================= *****  ========================= ###
-### ========================= *****  ========================= ###
-
-# # lifespan function provide by FastAPI (create db table at start of program)
-# # function, before the yield, will be executed before the application starts.
-# # it create table only one-time, if table is already created, won't create again
-# @asynccontextmanager
-# async def life_span(app: FastAPI):
-#     print("Creating Tables....")
-#     create_db_table()
-#     yield
-
-# app = FastAPI(lifespan= life_span, title="API DB")
-
-### ========================= *****  ========================= ###
-
-# create session to get memory space in db
-
-# create object of session and pass engine in it and return in local-variable session
-# get-session is created on server.  (engine give db connectivity) 
-# def get_session():
-#     with Session(engine) as session:
-#         yield session
-
-### ========================= *****  ========================= ###
-
-# # create engine
-# engine = create_engine(connection_string, connect_args={"sslmode":"require"}, pool_recycle=300, echo=True)
-# #  engine with echo=True, it will show the SQL it executes in the output
-
-### ========================= *****  ========================= ###
-
-
-### ========================= *****  ========================= ###
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-
-
-
-
 

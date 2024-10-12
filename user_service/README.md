@@ -38,8 +38,28 @@ poetry run uvicorn app.main:app --reload
 ```
 
 ### Contecting with db
+.env  (Write secret credential.)
+```bash
+DATABASE_URL =
+```
+
+**Note:-** When copying the database URL (DB_URL), ensure that only the owner has access to add, update, and delete data. Developers should have limited write access.
 
 #### DATABASE_URL
+setting.py
+```bash
+from starlette.config import Config
+from starlette.datastructures import Secret
+
+try:
+    config = Config(".env")
+except FileNotFoundError:
+    config = Config()  
+
+DATABASE_URL = config("DATABASE_URL", cast=Secret)
+```
+
+**==========================================================**
 
 ```bash
 connection_string = str(DATABASE_URL).replace("postgresql", "postgresql+psycopg")
@@ -90,6 +110,38 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 
 .create_all(): This method, when called, uses the metadata to generate SQL commands that create the necessary tables in the connected database. Essentially, it will ensure all your defined models have corresponding tables.
 
+### Session
+```bash
+def get_session():
+    with Session(engine) as session:
+        yield session
+``` 
+
+This function creates a session object using the provided engine for database connectivity, and it yields this session. It ensures that the session is properly created and closed after use. 
+
+**- with** statement ensures that resources are properly managed, like automatically closing the session after it's used.
+
+**- yield** allows a function to return a value and then pause its execution, resuming right where it left off the next time it’s called. This is what makes a generator function. It’s perfect for situations where you want to iterate through a sequence without storing the entire thing in memory
+
+The code in the function before yield will be executed each time the generator is called.
+
+### Lifespan
+Lifespan function provided by FastAPI (creates DB table at program startup)
+It creates the table only once; if the table already exists, it won't create it again
+
+```bash
+async def life_span(app: FastAPI):
+    print("Creating tables during lifespan startup...")
+    await create_db_and_tables()  # Properly await table creation
+    yield  # Lifespan generator is working correctly
+``` 
+
+### Create FastAPI instance
+```bash
+app = FastAPI(lifespan=life_span, title='Fast API')
+``` 
+
+
 ### Get Form Data
 
 **creates a new User object using the details provided in form_data.**
@@ -136,41 +188,14 @@ Executing Raw SQL :- session.execute() to run raw SQL queries
 
 
 [Can Pydantic model_dump() return exact type?](https://stackoverflow.com/questions/77476105/can-pydantic-model-dump-return-exact-type)
-<<<<<<< HEAD
-=======
-
 
 **==========================================================**
 
-## Tutorials Details  check
-
-**lifespan**
--lifespan function provide by FastAPI (create db table at start of program)
--function, before the yield, will be executed before the application starts.
--it create table only one-time, if table is already created, won't create again
-Create FastAPI instance
-app = FastAPI(lifespan= create_db_and_tables)
-
-**session**
--create object of session and pass engine in it and return in local-variable session
--get-session is created on server.  (engine give db connectivity) 
-def get_session():
-    with Session(engine) as session:
-        yield session
-
+## Tutorials Details  
 
 **SQLModel** (ORM)
 
-we use other methods
 [SQLModel : Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/#review-the-code)
-
-
-**pytest cache directory**
-
-This directory contains data from the pytest's cache plugin,
-which provides the `--lf` and `--ff` options, as well as the `cache` fixture.
-
-**Do not** commit this to version control.
 
 
 [How to re-run failed tests and maintain state between test runs](https://docs.pytest.org/en/stable/how-to/cache.html)
@@ -182,5 +207,4 @@ which provides the `--lf` and `--ff` options, as well as the `cache` fixture.
 
 - jwt token decode  # Decoding the token
 -decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
->>>>>>> be1e33e (product_service)
 
