@@ -1,17 +1,10 @@
 # online mart - user service
 
-<<<<<<< HEAD
 poetry —-version
 
 **Create Poetry Project**
-=======
-### Contecting with db
-
-#### DATABASE_URL
->>>>>>> be1e33e (product_service)
 
 ```bash
-<<<<<<< HEAD
 poetry new project_name 
 ```
 
@@ -49,8 +42,6 @@ poetry run uvicorn app.main:app --reload
 #### DATABASE_URL
 
 ```bash
-=======
->>>>>>> be1e33e (product_service)
 connection_string = str(DATABASE_URL).replace("postgresql", "postgresql+psycopg")
 ``` 
 
