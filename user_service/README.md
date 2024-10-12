@@ -101,16 +101,17 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 
 ### Get Form Data
 
-####  convert data from form_data directly into a User object
+**creates a new User object using the details provided in form_data.**
+
 ```bash
 User(**form_data.model_dump())
 ``` 
 
-form_data.model_dump():** This method returns a dictionary of the data stored in form_data.
+form_data.model_dump():- return a dictionary of the data stored in form_data
 
-** (double asterisk): Unpacks this dictionary into keyword arguments.
+(**form_data.model_dump()) :- unpacks the form_data dictionary into keyword arguments
 
-User(...): Passes these unpacked arguments to the User constructor, creating an instance of User.
+**Note**  ** (double asterisk): unpacks a dictionary into keyword arguments.
 
 **Detail Description**
 
