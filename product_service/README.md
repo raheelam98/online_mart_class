@@ -1,4 +1,4 @@
-# online mart - user service
+# online mart - Product Service
 
 poetry —-version
 
@@ -61,6 +61,8 @@ DATABASE_URL = config("DATABASE_URL", cast=Secret)
 
 **==========================================================**
 
+### Contection String
+
 ```bash
 connection_string = str(DATABASE_URL).replace("postgresql", "postgresql+psycopg")
 ``` 
@@ -73,7 +75,7 @@ This code modifies the DATABASE_URL so it can use the psycopg driver when connec
 
 **psycopg** driver is a popular and efficient library for interacting with PostgreSQL databases in Python
 
-#### create a connection to the database
+#### Create a connection to the database
 
 ```bash
 engine = create_engine(connection_string, connect_args={}, pool_recycle=300)
@@ -143,7 +145,7 @@ app = FastAPI(lifespan=life_span, title='Fast API')
 
 ### Get Form Data
 
-**creates a new User object using the details provided in form_data.**
+**creates a new Product object using the details provided in form_data.**
 
 ```bash
 Product(**form_data.model_dump())
@@ -157,13 +159,13 @@ form_data.model_dump():- return a dictionary of the data stored in form_data
 
 **Detail Description**
 
-**1- Pydantic Model:** User instance (form_data) holds user details.
+**1- Pydantic Model:** Product instance (form_data) holds product details.
 
 **2- Convert to Dictionary:** form_data.model_dump() converts the instance to a dictionary.
 
 **3- Dictionary Unpacking:** **form_data.model_dump() unpacks the dictionary into keyword arguments.
 
-**4- Create User Object:** Product(**form_data.model_dump()) creates a new data object with the provided details.
+**4- Create Product Object:** Product(**form_data.model_dump()) creates a new data object with the provided details.
 
 **model_dump()** method in Pydantic :- converts a model instance into a dictionary with the model's attribute names as keys and their corresponding values.
 
