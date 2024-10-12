@@ -1,4 +1,4 @@
-# online mart - Product Service
+# Online Mart - Product Service
 
 poetry —-version
 
