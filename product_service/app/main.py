@@ -183,6 +183,6 @@ def search_product_by_name(name: str, session: Session) -> List[Product]:
 def search_product(name: str, session: DB_Session):
     return search_product_by_name(name, session)
 
-
+### ========================= *****  ========================= ####
 
 
