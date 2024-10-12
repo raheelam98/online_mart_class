@@ -1,15 +1,59 @@
 from fastapi import FastAPI, Depends, HTTPException
 from sqlmodel import SQLModel, Field, create_engine, Session, select
-from typing import Optional, Annotated
-
+from typing import Optional, Annotated, List
+from datetime import date
 from app.settings import DB_URL
 
-class ProductModel(SQLModel):
+### ============================================================================================================= ###
+
+class CategoryModel(SQLModel):
+    category_name: str    
+
+class Category(CategoryModel, table=True):
+    category_id: Optional[int] = Field(None, primary_key=True)
+
+### ============================================================================================================= ###
+
+class SizeModel(SQLModel):
+    size: str  # (Large, Medium, Small)    
+
+class Size(SizeModel, table=True):
+    size_id: Optional[int] = Field(default=None, primary_key=True)
+
+
+### ============================================================================================================= ###
+
+
+
+class ProductBase(SQLModel):
     product_name: str
-    product_desc: str
+    product_price : float
+    is_available: bool = False 
+    product_description: str | None
+    product_add_date : date = Field(default=date.today())     
+
+class ProductDetail(SQLModel):
+    product_name: str
+    product_price : float
+    advance_payment_percetage: float = Field(default=0)
+    product_code: int
+    is_available: bool = False      # DEFAULT 'No',  -- yes/no
+    product_description: str | None
+    # category_id : int = Field(foreign_key="category.category_id")
+    # size_id : int = Field(foreign_key="size.size_id")
+
+class ProductModel(ProductBase, ProductDetail):
+    pass
 
 class Product(ProductModel, table=True):
     product_id: Optional[int] = Field(default=None, primary_key=True)
+
+class ProductUpdateModel(SQLModel):
+    product_name: Optional[str]
+    product_price: Optional[float]
+    is_available: Optional[bool]
+    product_description: Optional[str]
+    advance_payment_percetage: Optional[str]
 
 ### ========================= *****  ========================= ###
 
@@ -43,7 +87,7 @@ DB_Session = Annotated[Session, Depends(get_session)]
 # Lifespan function provided by FastAPI (creates DB table at program startup)
 # It creates the table only once; if the table already exists, it won't create it again
 async def life_span(app: FastAPI):
-    print("Creating tables during lifespan startup...")
+    print("Call create tables function during lifespan startup...")
     await create_db_and_tables()  # Properly await table creation
     yield  # Lifespan generator is working correctly
 
@@ -162,8 +206,23 @@ def delete_product(id: int, session: DB_Session):
     deleted_user = delete_product_from_db(id, session)
     return f'Product id {id} has been successfully deleted'
 
-### ========================= *****  ========================= ###
+### ========================= *****  ========================= ####
 
+## check code
+
+def search_product_by_name(name: str, session: Session) -> List[Product]:
+    products = session.exec(
+        select(Product).where(Product.product_name.ilike(f"%{name}%"))
+    ).all()
+
+    if not products:
+        raise HTTPException(status_code=404, detail="No products found with this name.")
+    
+    return products
+
+@app.get("/api/search_product_by_name/{product_name}", response_model=List[Product])
+def search_product(name: str, session: DB_Session):
+    return search_product_by_name(name, session)
 
 
 
