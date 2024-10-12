@@ -208,8 +208,6 @@ def delete_product(id: int, session: DB_Session):
 
 ### ========================= *****  ========================= ####
 
-## check code
-
 def search_product_by_name(name: str, session: Session) -> List[Product]:
     products = session.exec(
         select(Product).where(Product.product_name.ilike(f"%{name}%"))
