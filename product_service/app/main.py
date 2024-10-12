@@ -19,13 +19,6 @@ class ProductModel(SQLModel):
 class Product(ProductModel, table=True):
     product_id: Optional[int] = Field(default=None, primary_key=True)
 
-class ProductUpdateModel(SQLModel):
-    product_name: Optional[str]
-    product_price: Optional[float]
-    is_available: Optional[bool]
-    product_description: Optional[str]
-
-
 ### ========================= *****  ========================= ###
 
 # Set up the database connection
