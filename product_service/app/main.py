@@ -6,15 +6,12 @@ from app.settings import DB_URL
 
 ### ============================================================================================================= ###
 
-
-
 class ProductModel(SQLModel):
     product_name: str
     product_price : float
     is_available: bool = False 
     product_description: str | None
     product_add_date : date = Field(default=date.today())     
-
 
 class Product(ProductModel, table=True):
     product_id: Optional[int] = Field(default=None, primary_key=True)
