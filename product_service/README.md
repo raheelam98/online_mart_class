@@ -229,7 +229,7 @@ session.get(User, delete_id)
 
 [Create a Table with SQLModel - Use the Engine](https://sqlmodel.tiangolo.com/tutorial/create-db-and-table/#last-review)
 
-[Read Data - SELEC](https://sqlmodel.tiangolo.com/tutorial/select/#review-the-code)
+[Read Data - SELECT](https://sqlmodel.tiangolo.com/tutorial/select/#review-the-code)
 
 [Can Pydantic model_dump() return exact type?](https://stackoverflow.com/questions/77476105/can-pydantic-model-dump-return-exact-type)
 
