@@ -27,17 +27,7 @@ PATCH: Applies partial modifications to a resource.
 
 [Using Dataclasses](https://fastapi.tiangolo.com/advanced/dataclasses/)
 
-[Read Data - SELECT](https://sqlmodel.tiangolo.com/tutorial/select/#create-a-select-statement)
-
 [Why Aren't We Getting More Data](https://sqlmodel.tiangolo.com/tutorial/fastapi/relationships/#why-arent-we-getting-more-data)
-
-[Models with Relationships in FastAPI](https://sqlmodel.tiangolo.com/tutorial/fastapi/relationships/)
-
-[Filter Data - WHERE](https://sqlmodel.tiangolo.com/tutorial/where/)
-
-[Update Data - UPDATE](https://sqlmodel.tiangolo.com/tutorial/update/#read-from-the-database)
-
-[Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/)
 
 [Dependencies with yield](https://fastapi.tiangolo.com/tutorial/dependencies/dependencies-with-yield/)
 
