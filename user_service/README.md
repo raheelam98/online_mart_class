@@ -419,6 +419,6 @@ session.get(User, delete_id)
 **JWT means "JSON Web Tokens"** (It is not encrypted), Install python-jose
 
 - jwt token decode  # Decoding the token
--decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+-decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])  
 
 **======================== ** ** ========================**
