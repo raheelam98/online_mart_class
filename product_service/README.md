@@ -38,7 +38,7 @@ poetry run uvicorn app.main:app --reload
 ```
 **======================== ** ** ========================**
 
-### Contecting with db
+## DATABASE_UR
 
 .env  (Write secret credential.)
 
@@ -48,7 +48,7 @@ DATABASE_URL =
 
 **Note:-** When copying the database URL (DB_URL), ensure that only the owner has access to add, update, and delete data. Developers should have limited write access.
 
-## DATABASE_URL
+## Contecting with db
 
 setting.py
 
