@@ -235,7 +235,7 @@ session.get(User, delete_id)
 
 [Models with Relationships in FastAPI](https://sqlmodel.tiangolo.com/tutorial/fastapi/relationships/)
 
-[Filter Data - WHERE](https://sqlmodel.tiangolo.com/tutorial/update/#review-the-code)
+[Filter Data - WHERE](https://sqlmodel.tiangolo.com/tutorial/update/#review-the-code)  
 
 
 [Update Data - UPDATE](https://sqlmodel.tiangolo.com/tutorial/update/#read-from-the-database)
