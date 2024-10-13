@@ -1,15 +1,18 @@
 from sqlmodel import SQLModel, Field, Session, create_engine, select
 from typing import Optional, Annotated
 from fastapi import FastAPI, Depends, HTTPException
+from pydantic import EmailStr
 from app.settings import DATABASE_URL
 
 ### ========================= *****  ========================= ###
+
+#Create Database Schema using SQLMode
 
 # Define the UserBase and User models
 class UserBase(SQLModel):
     user_name: str
     user_address: str
-    user_email: str
+    user_email: EmailStr
     user_password: str    
 
 class User(UserBase, table=True):
