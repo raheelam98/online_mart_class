@@ -1,43 +1,5 @@
 # Online Mart - User Service
 
-poetry —-version
-
-**Create Poetry Project**
-
-```bash
-poetry new project_name 
-```
-
-add drivers mac
-```shell
-poetry add fastapi uvicorn\[standard\] 
-```
-
-add drivers for db
-```shell
-poetry add sqlmodel psycopg
-```
-
-add drivers (one line command) mac
-```shell
-poetry add fastapi sqlmodel uvicorn\[standard\] psycopg 
-```
-
-add drivers (one line command) window
-```shell
-poetry add fastapi uvicorn[standard] sqlmodel psycopg 
-```
-
-run poetry app
-```shell
-poetry run uvicorn folder_name.file_name:app --port 8000 --reload
-```
-
-```shell
-poetry run uvicorn app.main:app --reload
-```
-**======================== ** ** ========================**
-
 ## DATABASE_URL 
 
 .env  (Write secret credential.)
