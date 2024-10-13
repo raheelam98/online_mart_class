@@ -36,9 +36,11 @@ poetry run uvicorn folder_name.file_name:app --port 8000 --reload
 ```shell
 poetry run uvicorn app.main:app --reload
 ```
+**======================== ** ** ========================**
 
 ### Contecting with db
 .env  (Write secret credential.)
+
 ```bash
 DATABASE_URL =
 ```
@@ -59,7 +61,7 @@ except FileNotFoundError:
 DATABASE_URL = config("DATABASE_URL", cast=Secret)
 ```
 
-**==========================================================**
+**======================== ** ** ========================**
 
 ### Contection String
 
@@ -92,6 +94,7 @@ engine = create_engine(connection_string, connect_args={}, pool_recycle=300)
 **pool_recycle=300:** Prevents stale connections by recycling (re-establishing) them every 300 seconds to avoid issues like timeout.
 
 ####  Create all tables defined in the model
+
 ```bash
 SQLModel.metadata.create_all(engine)
 ``` 
@@ -113,6 +116,7 @@ SQLModel: It’s a library built on top of SQLAlchemy and Pydantic that simplifi
 .create_all(): This method, when called, uses the metadata to generate SQL commands that create the necessary tables in the connected database. Essentially, it will ensure all your defined models have corresponding tables.
 
 ### Session
+
 ```bash
 def get_session():
     with Session(engine) as session:
@@ -128,6 +132,7 @@ This function creates a session object using the provided engine for database co
 The code in the function before yield will be executed each time the generator is called.
 
 ### Lifespan
+
 Lifespan function provided by FastAPI (creates DB table at program startup)
 It creates the table only once; if the table already exists, it won't create it again
 
@@ -139,14 +144,32 @@ async def life_span(app: FastAPI):
 ``` 
 
 ### Create FastAPI instance
+
 ```bash
 app = FastAPI(lifespan=life_span, title='Fast API')
 ``` 
 
+**======================== ** ** ========================**
 
-### Get Form Data
 
-**creates a new User object using the details provided in form_data.**
+### Retrive Data
+
+```bash
+statement = select(User)
+user_list = session.exec(statement).all()
+```
+
+**select(User)** creates a query to select all records from the User table.
+
+**user_list = session.exec(statement).all()** executes the query and retrieves all results as a list by calling .all()
+
+Note :-  **.all()** is used on the result of session.exec(statement) to get a list of all rows immediately, instead of returning an iterable.
+
+### Create Data 
+
+**creates a new user object using the details provided in form_data.**
+
+#### Get Form Data
 
 ```bash
 User(**form_data.model_dump())
@@ -170,17 +193,34 @@ form_data.model_dump():- return a dictionary of the data stored in form_data
 
 **model_dump()** method in Pydantic :- converts a model instance into a dictionary with the model's attribute names as keys and their corresponding values.
 
-### Update Form Data
+### Update Record 
+
+#### Update Form Data
 
 ```bash
-query = select(User).where(User.user_id == selected_id)
+statement = select(User).where(User.user_id == selected_id)
+selected_user = session.exec(statement).first()
 ``` 
-select(User): Specifies that you want to select data from the User table.
 
-.where(User.user_id == selected_id): Adds a condition to filter the results to only include rows where user_id matches selected_id.
+**select(User)**: Specifies that you want to select data from the User table.
 
-Executing Raw SQL :- session.execute() to run raw SQL queries
+**.where()** filter rows 
 
+**.where(User.user_id == selected_id)**: Adds a condition to filter the results to only include rows where user_id matches selected_id.
+
+Executing Raw SQL :- **session.exec()** to run raw SQL queries
+
+### Delete Record
+
+```bash
+session.get(User, delete_id)
+``` 
+
+**session.get(User, delete_id)** retrieves a specific record from the User table where the primary key matches the value of **delete_id**. If a matching record is found, it returns the corresponding User object; otherwise, it returns None.
+
+**get()** is a versatile method that enhances both dictionary manipulations and HTTP requests in Python.
+
+**======================== ** ** ========================**
 
 ### Tutorials
 
@@ -188,17 +228,26 @@ Executing Raw SQL :- session.execute() to run raw SQL queries
 
 [Create a Table with SQLModel - Use the Engine](https://sqlmodel.tiangolo.com/tutorial/create-db-and-table/#last-review)
 
+[Read Data - SELEC](https://sqlmodel.tiangolo.com/tutorial/select/#review-the-code)
 
 [Can Pydantic model_dump() return exact type?](https://stackoverflow.com/questions/77476105/can-pydantic-model-dump-return-exact-type)
 
-**==========================================================**
+[Models with Relationships in FastAPI](https://sqlmodel.tiangolo.com/tutorial/fastapi/relationships/)
+
+[Filter Data - WHERE](https://sqlmodel.tiangolo.com/tutorial/where/)
+
+[Update Data - UPDATE](https://sqlmodel.tiangolo.com/tutorial/update/#read-from-the-database)
+
+
+[SQLModel : Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/#review-the-code)
+
+[Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/)
+
+**======================== ** ** ========================**
 
 ## Tutorials Details  
 
 **SQLModel** (ORM)
-
-[SQLModel : Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/#review-the-code)
-
 
 [How to re-run failed tests and maintain state between test runs](https://docs.pytest.org/en/stable/how-to/cache.html)
 
@@ -210,3 +259,4 @@ Executing Raw SQL :- session.execute() to run raw SQL queries
 - jwt token decode  # Decoding the token
 -decoded_token = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
 
+**======================== ** ** ========================**
