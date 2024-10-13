@@ -39,6 +39,7 @@ poetry run uvicorn app.main:app --reload
 **======================== ** ** ========================**
 
 ### Contecting with db
+
 .env  (Write secret credential.)
 
 ```bash
@@ -48,6 +49,7 @@ DATABASE_URL =
 **Note:-** When copying the database URL (DB_URL), ensure that only the owner has access to add, update, and delete data. Developers should have limited write access.
 
 #### DATABASE_URL
+
 setting.py
 ```bash
 from starlette.config import Config
@@ -132,6 +134,7 @@ This function creates a session object using the provided engine for database co
 The code in the function before yield will be executed each time the generator is called.
 
 ### Lifespan
+
 Lifespan function provided by FastAPI (creates DB table at program startup)
 It creates the table only once; if the table already exists, it won't create it again
 
@@ -143,6 +146,7 @@ async def life_span(app: FastAPI):
 ``` 
 
 ### Create FastAPI instance
+
 ```bash
 app = FastAPI(lifespan=life_span, title='Fast API')
 ``` 
@@ -239,7 +243,6 @@ session.get(User, delete_id)
 [SQLModel : Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/#review-the-code)
 
 [Delete Data - DELETE](https://sqlmodel.tiangolo.com/tutorial/delete/)
-
 
 **======================== ** ** ========================**
 
