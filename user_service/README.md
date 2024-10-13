@@ -39,6 +39,7 @@ poetry run uvicorn app.main:app --reload
 **======================== ** ** ========================**
 
 ### Contecting with db
+
 .env  (Write secret credential.)
 
 ```bash
@@ -48,6 +49,7 @@ DATABASE_URL =
 **Note:-** When copying the database URL (DB_URL), ensure that only the owner has access to add, update, and delete data. Developers should have limited write access.
 
 #### DATABASE_URL
+
 setting.py
 ```bash
 from starlette.config import Config
@@ -150,7 +152,6 @@ app = FastAPI(lifespan=life_span, title='Fast API')
 ``` 
 
 **======================== ** ** ========================**
-
 
 ### Retrive Data
 
