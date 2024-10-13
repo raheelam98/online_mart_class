@@ -66,6 +66,24 @@ DATABASE_URL = config("DATABASE_URL", cast=Secret)
 
 **======================== ** ** ========================**
 
+## Create Database Schema using SQLModel
+
+UserBase defines the shared attributes for a user, while User extends it to represent a database table with user_id as the primary key.
+
+```bash
+# Define the UserBase and User models
+class UserBase(SQLModel):
+    user_name: str
+    user_address: str
+    user_email: str
+    user_password: str    
+
+class User(UserBase, table=True):
+    user_id: Optional[int] = Field(default=None, primary_key=True)
+```
+
+**======================== ** ** ========================**
+
 ## Create a Table with SQLModel - Use the Engine
 
 ```bash
