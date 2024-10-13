@@ -3,6 +3,8 @@ from typing import Optional, Annotated
 from fastapi import FastAPI, Depends, HTTPException
 from app.settings import DATABASE_URL
 
+### ========================= *****  ========================= ###
+
 # Define the UserBase and User models
 class UserBase(SQLModel):
     user_name: str
