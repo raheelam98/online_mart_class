@@ -38,7 +38,7 @@ poetry run uvicorn app.main:app --reload
 ```
 **======================== ** ** ========================**
 
-### DATABASE_URL 
+## DATABASE_URL 
 
 .env  (Write secret credential.)
 
@@ -93,7 +93,7 @@ def get_session():
 DB_Session = Annotated[Session, Depends(get_session)]
 ```
 
-### FastAPI
+## FastAPI
 
 ```bash
 # Lifespan function provided by FastAPI (creates DB table at program startup)
