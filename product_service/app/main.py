@@ -4,7 +4,7 @@ from typing import Optional, Annotated, List
 from datetime import date
 from app.settings import DB_URL
 
-### ============================================================================================================= ###
+### ========================= *****  ========================= ###
 
 class ProductModel(SQLModel):
     product_name: str
