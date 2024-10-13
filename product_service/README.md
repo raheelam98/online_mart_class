@@ -38,7 +38,7 @@ poetry run uvicorn app.main:app --reload
 ```
 **======================== ** ** ========================**
 
-## DATABASE_UR
+## DATABASE_URL
 
 .env  (Write secret credential.)
 
